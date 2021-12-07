@@ -2,10 +2,10 @@
 
 // Verification de l'email
 function check_email($email) {
-    global  $bdd; 
+    $bdd = Database::getInstance();
 
     try {
-        $req = $bdd->prepare("SELECT * FROM user WHERE email = :email"); 
+        $req = $bdd->connection->prepare("SELECT * FROM user WHERE email = :email"); 
         $req->bindParam(':email', $email, PDO::PARAM_STR); 
         $req->execute();
 
@@ -25,14 +25,14 @@ function check_email($email) {
 
 // Connexion d'un utilisateur
 function login($email, $password) { 
-    global  $bdd; 
+    $bdd = Database::getInstance(); 
 
     $_email = isset($email) ? $email : null;
     //$hash = password_hash($password, PASSWORD_BCRYPT);
     $_password = isset($password) ? $password : null;
 
     try {
-        $req = $bdd->prepare("SELECT * FROM user WHERE email = :email"); 
+        $req = $bdd->connection->prepare("SELECT * FROM user WHERE email = :email"); 
         $req->bindParam(':email', $_email, PDO::PARAM_STR); 
         $req->execute();
 
@@ -54,14 +54,15 @@ function login($email, $password) {
 
 // Creation du compte d'un utilisateur
 function signin($prenom, $nom, $phone, $email, $password) { 
-    global  $bdd; 
+    $bdd = Database::getInstance();
 
     $mot_de_passe_crypte = password_hash($password, PASSWORD_BCRYPT);
     $isConnected = "Disconnected";
     $status = 'a:1:{i:0;s:7:"ouvirer";}';
 
     try {
-        $req = $bdd->prepare("INSERT INTO user (last_name, first_name, email, phone, password, isconnected, statuts, activated) VALUES (:nom, :prenom, :email, :phone, :password, :isconnected, :status, 0)"); 
+        $bdd->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES,TRUE);
+        $req = $bdd->connection->prepare("INSERT INTO user (last_name, first_name, email, phone, password, isconnected, statuts, activated) VALUES (:nom, :prenom, :email, :phone, :password, :isconnected, :status, 0)"); 
         $req->bindParam(':nom', $nom, PDO::PARAM_STR); 
         $req->bindParam(':prenom', $prenom, PDO::PARAM_STR); 
         $req->bindParam(':email', $email, PDO::PARAM_STR); 
@@ -70,25 +71,20 @@ function signin($prenom, $nom, $phone, $email, $password) {
         $req->bindParam(':isconnected', $isConnected, PDO::PARAM_STR); 
         $req->bindParam(':status', $status, PDO::PARAM_STR); 
 
-        $bdd->beginTransaction();
+        $bdd->connection->beginTransaction();
 
         $req->execute();
 
-        $bdd->commit();
+        $last_id = $bdd->connection->lastInsertId();
 
-        $last_id = $bdd->lastInsertId();
+        $bdd->connection->commit();
         
-        die($last_id);
+        // var_dump($last_id); die;
 
-        // if(!empty($user) && password_verify($_password, $user['password'])) {
+        return $last_id;
 
-        //     return $user;
-        // } 
-        // else {
-        //     return null;
-        // }
     } catch(Exception $e) {
-        $bdd->rollback();
+        $bdd->connection->rollback();
         print "Error!: " . $e->getMessage() . "</br>";
     }    
     

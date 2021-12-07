@@ -67,10 +67,15 @@ if(isset($_SESSION['user'])){
         $email = $_POST['email'];
         $password = $_POST['password'];
         
-        signin($prenom, $nom, $phone, $email, $password);
+        $insertion = signin($prenom, $nom, $phone, $email, $password);
 
-        $_SESSION['signup_success'] = "Bravo! votre compte a ete cree avec success, veuillez vous connecter";
-        header('Location: index.php?page=login');
+        if($insertion) {
+            $_SESSION['signup_success'] = "Votre compte a été créé avec success, veuillez vous connecter.";
+            header('Location: index.php?page=login');
+        } else {
+            $signup_errors['signup'] = "Une erreur est survenue lors de l'inscription";
+        }
+
     } else {
         $_SESSION['signup_errors'] = $signup_errors;
         $_SESSION['signup_correct_data'] = $signup_correct_data;
