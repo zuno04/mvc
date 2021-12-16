@@ -1,5 +1,5 @@
 <?php 
-session_start();
+// session_start();
 include_once(__DIR__ . '/../partials/header.php'); 
 ?>
 
@@ -36,13 +36,42 @@ include_once(__DIR__ . '/../partials/header.php');
                 <label for="floatingPassword">Mot de passe</label>
             </div>
 
-            <!-- <div class="mt-3 mb-3 checkbox row">
-                <div class="col-sm-3">
-                    <label>
-                        <input name="remember-me" type="checkbox" value="remember-me"> Rester connecté
-                    </label>
+            <!-- Connecter en tant que -->
+            <div  class="mt-3">
+                <div class="form-check form-check-inline">
+                    <input
+                        class="form-check-input"
+                        type="radio"
+                        name="connected_as"
+                        id="user_client_id"
+                        value="Client"
+                    />
+                    <label class="form-check-label" for="user_client_id">Client</label>
                 </div>
-            </div> -->
+
+                <div class="form-check form-check-inline">
+                    <input
+                        class="form-check-input"
+                        type="radio"
+                        name="connected_as"
+                        id="user_employee_id"
+                        value="Travailleur"
+                        checked
+                    />
+                    <label class="form-check-label" for="user_employee_id">Travailleur</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input
+                        class="form-check-input"
+                        type="radio"
+                        name="connected_as"
+                        id="user_root_id"
+                        value="Root"
+                    />
+                    <label class="form-check-label" for="user_root_id">Root</label>
+                </div>
+            </div>
             <button class="mt-3 w-100 btn btn-lg btn-primary" type="submit">Se connecter</button>
             <p class="mt-3">Pas encore inscrit ? <a href="index.php?page=signup" class="text-decoration-none">Créez votre compte</a></p>
         </form>

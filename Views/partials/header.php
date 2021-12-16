@@ -14,6 +14,8 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
+    <!-- flatpickr Pour selection de date (https://unpkg.com/flatpickr@1.6.5/index.html) -->
+    <link rel="stylesheet" type="text/css" href="./views/css/flatpickr.min.css">
     <link rel="stylesheet" href="./views/css/style.css" />
     <title>Projet Janvier</title>
   </head>
@@ -37,16 +39,17 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Bienvenue, 
-                    <?php if (isset($_SESSION['user']) && in_array('admin', unserialize($_SESSION['user']['statuts']))): ?>
-                        <?= $_SESSION['user']['first_name'] ?>
+                    <?php if (isset($_SESSION['user'])): ?>
+                        <?= $_SESSION['user']['isconnected'] == 'Root' ? $_SESSION['user']['first_name'] .  " (Root)" : $_SESSION['user']['first_name'] ?>
                     <?php else: ?>
                         <?= "visiteur" ?>
                     <?php endif; ?>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                     <?php if (isset($_SESSION['user'])): ?>
-                        <?php if (in_array('admin', unserialize($_SESSION['user']['statuts']))): ?>
-                        <li><a class="dropdown-item" href="#">Gérer les utilisateurs</a></li>
+                        <?php if ($_SESSION['user']['isconnected'] == 'Root'): ?>
+                        <li><a class="dropdown-item" href="index.php?page=dashboard">Mon espace</a></li>
+                        <li><a class="dropdown-item" href="index.php?page=manage_users">Gérer les utilisateurs</a></li>
                         <li><a class="dropdown-item" href="#">Mon Compte</a></li>
                         <?php endif; ?>
                         <li><a class="dropdown-item" href="index.php?page=logout">Déconnexion</a></li>

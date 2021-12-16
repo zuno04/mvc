@@ -1,23 +1,25 @@
 <?php
 
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-include_once('models/user.php');
+include_once('Models/user.php');
 
 $login_errors = "";
 
 if(isset($_SESSION['user'])){
     header('Location: index.php?page=dashboard');
-} else if(isset($_POST['email']) && isset($_POST['password'])) {
+} else if(isset($_POST['email']) && isset($_POST['password']) && isset($_POST['connected_as'])) {
     
     try {
-        $user = login($_POST['email'], $_POST['password']);
+        $login_request = login($_POST['email'], $_POST['password'], $_POST['connected_as']);
 
-        if($user) {
-            $_SESSION['user'] = $user;
+        if($login_request->success) {
+            $_SESSION['user'] = $login_request->data;
             header('Location: index.php?page=dashboard');
         } else {
-            $login_errors = 'Email ou mot de passe incorrecte';
+            $login_errors = $login_request->message;
             $_SESSION['login_errors'] = $login_errors;
             header('Location: index.php?page=login');
         }
