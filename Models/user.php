@@ -93,12 +93,12 @@ function login($email, $password, $connected_as) {
 
 
 // Creation du compte d'un utilisateur
-function signin($prenom, $nom, $phone, $email, $password) { 
+function signin($prenom, $nom, $phone, $email, $password, $accountType) { 
     $bdd = Database::getInstance();
 
     $mot_de_passe_crypte = password_hash($password, PASSWORD_BCRYPT);
     $isConnected = "Disconnected";
-    $status = 'a:1:{i:0;s:11:"Travailleur";}';
+    $status = $accountType == "Travailleur" ? 'a:1:{i:0;s:11:"Travailleur";}' : 'a:1:{i:0;s:6:"Client";}';
 
     try {
         $bdd->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES,TRUE);

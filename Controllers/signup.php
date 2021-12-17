@@ -68,14 +68,16 @@ if(isset($_SESSION['user'])){
         $phone = $_POST['phone'];
         $email = $_POST['email'];
         $password = $_POST['password'];
+        $accountType = $_POST['type_compte'];
         
-        $insertion = signin($prenom, $nom, $phone, $email, $password);
+        $insertion = signin($prenom, $nom, $phone, $email, $password, $accountType);
 
         if($insertion) {
             $_SESSION['signup_success'] = "Votre compte a été créé avec success, veuillez vous connecter.";
             header('Location: index.php?page=login');
         } else {
             $signup_errors['signup'] = "Une erreur est survenue lors de l'inscription";
+            header('Location: index.php?page=signup');
         }
 
     } else {

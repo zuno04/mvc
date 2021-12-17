@@ -5,11 +5,29 @@ function getTasks() {
     $bdd = Database::getInstance();
 
     try {
-        $req = $bdd->connection->prepare("SELECT * FROM tache"); 
-        $req->execute();
-        $users = $req->fetchAll(); 
+        $req = $bdd->connection->prepare("
+            SELECT 
+            T.id, 
+            T.name, 
+            T.description, 
+            T.date_debut, 
+            T.date_fin,
+            T.etat,
+            T.commanditaire,
+            T.id_utilisateur ,
+            U.id 'id_auteur',
+            U.first_name 'prenom_auteur',
+            U.last_name 'nom_auteur'
 
-        return $users;
+            FROM tache T
+            LEFT JOIN user U ON T.commanditaire=U.id
+        "); 
+        $req->execute();
+        $tasks = $req->fetchAll(); 
+
+        // var_dump($tasks); die;
+
+        return $tasks;
 
     } catch(Exception $e) {
         die('Erreur : '.$e->getMessage());
@@ -36,6 +54,37 @@ function getTaskById($task_id) {
         else {
             return null;
         }
+    } catch(Exception $e) {
+        die('Erreur : '.$e->getMessage());
+    }
+}
+
+// Ajouter une tache
+function addTask($nomTache, $emmeteur, $descriptionTache, $dateDebutTache, $dateFinTache) {
+    $bdd = Database::getInstance(); 
+    $etat_tache = 'EnCours';
+    $emmeteur = intval($emmeteur);
+    // $id_utilisateur = null;
+
+    try {
+        $bdd->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES,TRUE);
+        $req = $bdd->connection->prepare("INSERT INTO tache (name, description, date_debut, date_fin, etat, commanditaire, id_utilisateur) VALUES (:nom_tache, :description_tache, :date_debut_tache, :date_fin_tache, :etat_tache, :emmeteur, NULL)"); 
+        $req->bindParam(':nom_tache', $nomTache, PDO::PARAM_STR); 
+        $req->bindParam(':description_tache', $descriptionTache, PDO::PARAM_STR); 
+        $req->bindParam(':date_debut_tache', $dateDebutTache, PDO::PARAM_STR); 
+        $req->bindParam(':date_fin_tache', $dateFinTache, PDO::PARAM_STR); 
+        $req->bindParam(':etat_tache', $etat_tache, PDO::PARAM_STR); 
+        $req->bindParam(':emmeteur', $emmeteur, PDO::PARAM_INT); 
+
+        $bdd->connection->beginTransaction();
+
+        $req->execute();
+
+        $last_id = $bdd->connection->lastInsertId();
+
+        $bdd->connection->commit();
+
+        return $last_id;
     } catch(Exception $e) {
         die('Erreur : '.$e->getMessage());
     }

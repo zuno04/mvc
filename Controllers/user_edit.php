@@ -10,12 +10,15 @@ if(isset($_SESSION['user'])){
         if($_GET['user_id']) {
             if(isset($_POST['status_updated'])) {
                 // Mettre a jour le statut de l'utilisateur
-                // var_dump($_POST); die;
-                $user_status = ["Travailleur"];
+                $user_status = [];
 
                 if(isset($_POST['statut_root'])) {
                     array_push($user_status, "Root");
-                } 
+                }
+                
+                if(isset($_POST['statut_travailleur'])) {
+                    array_push($user_status, "Travailleur");
+                }
                 
                 if(isset($_POST['statut_client'])) {
                     array_push($user_status, "Client");

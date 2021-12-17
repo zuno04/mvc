@@ -82,6 +82,32 @@
                 </div>
             </div>
 
+             <!-- Type de compte -->
+             <div  class="mt-5">
+                <div class="form-check form-check-inline">
+                    <input
+                        class="form-check-input"
+                        type="radio"
+                        name="type_compte"
+                        id="user_client_id"
+                        value="Client"
+                    />
+                    <label class="form-check-label" for="user_client_id">Client</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input
+                        class="form-check-input"
+                        type="radio"
+                        name="type_compte"
+                        id="user_employee_id"
+                        value="Travailleur"
+                        checked
+                    />
+                    <label class="form-check-label" for="user_employee_id">Travailleur</label>
+                </div>
+            </div>
+
             <button class="mt-5 w-100 btn btn-lg btn-primary" type="submit">S'inscrire</button>
             <p class="mt-3">Déjà inscrit ? <a href="index.php?page=login" class="text-decoration-none">Connectez-vous</a></p>
         </form>

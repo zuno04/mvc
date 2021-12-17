@@ -8,7 +8,7 @@
           <form class="p-5 border" method="POST" action="index.php?page=user_edit&user_id=<?= $user["id"] ?>">
             <legend class="w-auto px-2">Statuts:</legend>
             <div class="form-check form-switch">
-              <input class="form-check-input" name="statut_travailleur" type="checkbox" id="travailleur_id" disabled <?php if (in_array('Travailleur', unserialize($user['statuts']))) echo "checked" ?>>
+              <input class="form-check-input" name="statut_travailleur" type="checkbox" id="travailleur_id" <?php if (in_array('Travailleur', unserialize($user['statuts']))) echo "checked" ?>>
               <label class="form-check-label" for="travailleur_id">Travailleur</label>
             </div>
             <div class="form-check form-switch">
