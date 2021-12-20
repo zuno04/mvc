@@ -4,10 +4,11 @@
       crossorigin="anonymous"
     ></script>
     <!-- flatpickr Pour selection de date (https://unpkg.com/flatpickr@1.6.5/index.html) -->
-    <script src="./views/js/flatpickr.js"></script>
+    <script src="./Views/js/flatpickr.js"></script>
 
     <script>
       flatpickr('.flatpickr', { dateFormat: 'd-m-Y'});
     </script>
+    <script defer src="./Views/js/main.js"></script>
   </body>
 </html>
