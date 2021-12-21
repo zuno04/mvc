@@ -90,19 +90,18 @@ function addTask($nomTache, $emmeteur, $descriptionTache, $dateDebutTache, $date
     }
 }
 
-// Mettre a jour le statut de l'utilisateur
-function updateUserStatus($user_id, $statuts) {
+// Mettre a jour une tache
+function updateTask($id_tache, $nomTache, $descriptionTache, $dateDebutTache, $dateFinTache) {
     $bdd = Database::getInstance(); 
-
-    $id = isset($user_id) ? $user_id : null;
-    $statuts = isset($statuts) ? $statuts : null;
-
-    // var_dump($statuts); die;
+    // var_dump( $nomTache); die;
 
     try {
-        $req = $bdd->connection->prepare("UPDATE user SET statuts = :statuts WHERE id = :id"); 
-        $req->bindParam(':id', $id, PDO::PARAM_STR); 
-        $req->bindParam(':statuts', $statuts, PDO::PARAM_STR); 
+        $req = $bdd->connection->prepare("UPDATE tache SET name = :name, description = :description, date_debut = :date_debut, date_fin = :date_fin WHERE id = :id"); 
+        $req->bindParam(':name', $nomTache, PDO::PARAM_STR);  
+        $req->bindParam(':description', $descriptionTache, PDO::PARAM_STR);  
+        $req->bindParam(':date_debut', $dateDebutTache, PDO::PARAM_STR);  
+        $req->bindParam(':date_fin', $dateFinTache, PDO::PARAM_STR);  
+        $req->bindParam(':id', $id_tache, PDO::PARAM_STR);  
         $update_successfull = $req->execute();
 
         if($update_successfull){
@@ -115,20 +114,18 @@ function updateUserStatus($user_id, $statuts) {
     }
 }
 
-// Modifier l'attribute isconnected de l'utilisateur en BD apres la deconnexion il prendra la valeur 'Disconnected'
-function disconnect($user_id) {
-    $bdd = Database::getInstance();
+// Supprimer une tache
+function deleteTask($task_id) {
+    $bdd = Database::getInstance(); 
 
-    $_is_connected = "Disconnected";
+    $id = isset($task_id) ? $task_id : null;
 
     try {
-        $req_update = $bdd->connection->prepare("UPDATE user SET isconnected = :isconnected WHERE id = :id"); 
-        $req_update->bindParam(':id', $user_id, PDO::PARAM_INT); 
-        $req_update->bindParam(':isconnected', $_is_connected, PDO::PARAM_STR); 
-        $update_successfull =  $req_update->execute();
+        $req = $bdd->connection->prepare("DELETE FROM tache WHERE id = :id"); 
+        $req->bindParam(':id', $id, PDO::PARAM_STR); 
+        $req->execute();
 
-        // On retourne l'etat de l'operation de mise a jour : true ou false
-        return  $update_successfull;
+        return true;
     } catch(Exception $e) {
         die('Erreur : '.$e->getMessage());
     }

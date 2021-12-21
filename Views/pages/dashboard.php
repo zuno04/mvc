@@ -5,7 +5,7 @@
 
       <!-- <a href="index.php?page=task_add" class="btn btn-success" ><i class="bi bi-plus-circle-dotted"></i> Ajouter</a> -->
       <!-- Button trigger modal -->
-      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+      <button type="button" class="btn btn-success" onclick="showModal()">
         <i class="bi bi-plus-circle-dotted"></i> Ajouter
       </button>
    
@@ -49,8 +49,8 @@
                 <td><?= $tache["date_fin"] ?></td>
                 <td><?= $tache["prenom_auteur"] . " " . $tache["nom_auteur"] ?></td>
                 <td><?php if($tache["etat"] == 'EnCours') { echo "En cours"; } else if($tache["etat"] == 'EnAttente') { echo "En attente"; } else { echo "Terminé"; } ?></td>
-                <td><a href="index.php?page=task_edit&task_id=<?= $tache["id"] ?>" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a></td>
-                <td><a href="index.php?page=delete_task&task_id=<?= $tache["id"] ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a></td>
+                <td><button class="btn btn-primary" onclick='showModal(<?= $tache["id"] ?>, <?= json_encode((Object)$tache) ?>)'><i class="bi bi-pencil-square"></i></button></td>
+                <td><button class="btn btn-danger" onclick="supprimerTache(<?= $tache['id'] ?>)"><i class="bi bi-trash"></i></button></td>
             </tr>
             <?php endif; ?>
 
@@ -73,11 +73,11 @@
     </main>
 
     <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="id_modal_tache" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="idTaskModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Ajout d'une nouvelle tâche</h5>
+            <h5 class="modal-title" id="idTaskModalTitle"></h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -129,7 +129,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-            <button type="button" id="addTaskButton" class="btn btn-primary">Enregistrer</button>
+            <button type="button" id="addTaskButton" class="btn btn-primary" >Enregistrer</button>
         </div>
         </div>
     </div>

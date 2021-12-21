@@ -14,11 +14,17 @@ if(isset($_SESSION['user'])){
        
         if(isset($_POST)) {
             
-            $emmeteur = $_SESSION['user']['id'];
             $newTaskData = json_decode(file_get_contents("php://input"), false);
             // var_dump($newTaskData); die;
 
-            $insertionTache = addTask($newTaskData->name, $emmeteur, $newTaskData->description, $newTaskData->startDate, $newTaskData->endDate);
+            if($newTaskData->createTask == false) {
+                // die("KKKK");
+                $updateTask = updateTask($newTaskData->id, $newTaskData->name, $newTaskData->description, $newTaskData->startDate, $newTaskData->endDate);
+            } else {
+                $emmeteur = $_SESSION['user']['id'];
+                $insertionTache = addTask($newTaskData->name, $emmeteur, $newTaskData->description, $newTaskData->startDate, $newTaskData->endDate);
+            }
+
             
             // if(isset($_POST['nom_tache']) && isset($_POST['description_tache']) && isset($_POST['date_debut_tache']) && isset($_POST['date_fin_tache'])) {
             //     $addTask_correct_data['date_debut_tache'] = $_POST['date_debut_tache'];

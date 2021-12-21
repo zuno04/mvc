@@ -17,6 +17,8 @@ if (!isset($_GET['page']) OR $_GET['page'] == 'index') {
     include_once('Controllers/user_edit.php');
 } elseif($_GET['page'] == 'task_add'){
     include_once('Controllers/task_add.php');
+} elseif($_GET['page'] == 'task_delete'){
+    include_once('Controllers/task_delete.php');
 } elseif($_GET['page'] == 'logout'){
     include_once('Controllers/logout.php');
 }
