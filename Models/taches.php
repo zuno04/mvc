@@ -15,12 +15,16 @@ function getTasks() {
             T.etat,
             T.commanditaire,
             T.id_utilisateur ,
+            E.id 'id_executant',
+            E.first_name 'prenom_executant',
+            E.last_name 'nom_executant',
             U.id 'id_auteur',
             U.first_name 'prenom_auteur',
             U.last_name 'nom_auteur'
 
             FROM tache T
             LEFT JOIN user U ON T.commanditaire=U.id
+            LEFT JOIN user E ON T.id_utilisateur=E.id
         "); 
         $req->execute();
         $tasks = $req->fetchAll(); 

@@ -27,11 +27,10 @@ if(isset($_SESSION['user'])){
         }
        
     } else {
-        die("DDDD");
         if(isset($_POST)) {
             $newTaskData = json_decode(file_get_contents("php://input"), false);
 
-            var_dump($newTaskData); die;
+            terminerTache($newTaskData->id);
         }
         // header('Location: index.php?page=dashboard');
     }

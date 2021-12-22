@@ -132,6 +132,12 @@ function getTaskToUpdate(tacheId = null, tache = null, update = false) {
 
 // Gerer l'affichage la fenetre modale
 function showModal(tacheId = null, tacheBrut = null) {
+  // console.log(tacheBrut);
+
+  // Decoder ou deserialiser la tache
+  // tacheBrut = decodeURIComponent(tacheBrut);
+  console.log(tacheBrut);
+
   let taskModal = document.getElementById("id_modal_tache");
   let modalTitle = taskModal.querySelector("#idTaskModalTitle");
   let taskModalPopup = new bootstrap.Modal(taskModal, {});
@@ -205,10 +211,10 @@ function terminerTache(id) {
       }
     );
 
-  //   setTimeout(function () {
-  //     location.href = "http://localhost/mvc/index.php?page=dashboard";
-  //   }, 5000);
-  // }
+    setTimeout(function () {
+      location.href = "http://localhost/mvc/index.php?page=dashboard";
+    }, 500);
+  }
 }
 
 // #######################################################################################################################################################################
