@@ -2,12 +2,12 @@
 
     <main class='container main-container'>
       <h1><?= $_SESSION['user']['isconnected'] == 'Root' ? "Liste des tâches" : "Mes tâches" ?></h1>
-
-      <!-- <a href="index.php?page=task_add" class="btn btn-success" ><i class="bi bi-plus-circle-dotted"></i> Ajouter</a> -->
       <!-- Button trigger modal -->
+      <?php if($_SESSION['user']['isconnected'] == 'Root' || $_SESSION['user']['isconnected'] == 'Client'): ?>
       <button type="button" class="btn btn-success" onclick="showModal()">
         <i class="bi bi-plus-circle-dotted"></i> Ajouter
       </button>
+      <?php endif; ?>
    
       <div class="mt-5">
       <table class="table table-striped table-hover">
@@ -20,26 +20,19 @@
                 <th scope="col">Date Fin</th>
                 <th scope="col">Auteur</th>
                 <th scope="col">Etat</th>
+                <?php if($_SESSION['user']['isconnected'] == 'Travailleur'): ?>
+                <th scope="col">Terminée</th>
+                <?php endif; ?>
+                <?php if($_SESSION['user']['isconnected'] == 'Root' || $_SESSION['user']['isconnected'] == 'Client'): ?>
                 <th></th>
                 <th></th>
+                <?php endif; ?>
             </tr>
         </thead>
         <tbody>
             <?php foreach($taches as $index=>$tache): ?>
-            <?php if($_SESSION['user']['isconnected'] == 'Client' && $tache["commanditaire"] == $_SESSION["user"]["id"]): ?>
-            <tr>
-                <th scope="row"><?= $index + 1 ?></th>
-                <td><?= $tache["name"] ?></td>
-                <td><?= $tache["description"] ?></td>
-                <td><?= $tache["date_debut"] ?></td>
-                <td><?= $tache["date_fin"] ?></td>
-                <td><?= $tache["prenom_auteur"] . " " . $tache["nom_auteur"] ?></td>
-                <td><?php if($tache["etat"] == 'EnCours') { echo "En cours"; } else if($tache["etat"] == 'EnAttente') { echo "En attente"; } else { echo "Terminé"; } ?></td>
-                <td><a href="index.php?page=task_edit&task_id=<?= $tache["id"] ?>" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a></td>
-                <td><a href="index.php?page=delete_task&task_id=<?= $tache["id"] ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a></td>
-            </tr>
-            <?php endif; ?>
 
+            <!-- Cas du Root -->
             <?php if($_SESSION['user']['isconnected'] == 'Root'): ?>                
             <tr>
                 <th scope="row"><?= $index + 1 ?></th>
@@ -53,8 +46,9 @@
                 <td><button class="btn btn-danger" onclick="supprimerTache(<?= $tache['id'] ?>)"><i class="bi bi-trash"></i></button></td>
             </tr>
             <?php endif; ?>
-
-            <?php if($_SESSION['user']['isconnected'] == 'Travailleur' && $tache["id_user"] == $_SESSION["user"]["id"]) : ?>
+            
+            <!-- Cas du Client -->
+            <?php if($_SESSION['user']['isconnected'] == 'Client' && $tache["commanditaire"] == $_SESSION["user"]["id"]): ?>
             <tr>
                 <th scope="row"><?= $index + 1 ?></th>
                 <td><?= $tache["name"] ?></td>
@@ -63,6 +57,26 @@
                 <td><?= $tache["date_fin"] ?></td>
                 <td><?= $tache["prenom_auteur"] . " " . $tache["nom_auteur"] ?></td>
                 <td><?php if($tache["etat"] == 'EnCours') { echo "En cours"; } else if($tache["etat"] == 'EnAttente') { echo "En attente"; } else { echo "Terminé"; } ?></td>
+                <td><button class="btn btn-primary" onclick='showModal(<?= $tache["id"] ?>, <?= json_encode((Object)$tache) ?>)'><i class="bi bi-pencil-square"></i></button></td>
+                <td><button class="btn btn-danger" onclick="supprimerTache(<?= $tache['id'] ?>)"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <?php endif; ?>
+
+            <!-- Cas du Travailleur -->
+            <?php if($_SESSION['user']['isconnected'] == 'Travailleur' && $tache["id_utilisateur"] == $_SESSION["user"]["id"]) : ?>
+            <tr>
+                <th scope="row"><?= $index + 1 ?></th>
+                <td><?= $tache["name"] ?></td>
+                <td><?= $tache["description"] ?></td>
+                <td><?= $tache["date_debut"] ?></td>
+                <td><?= $tache["date_fin"] ?></td>
+                <td><?= $tache["prenom_auteur"] . " " . $tache["nom_auteur"] ?></td>
+                <td><?php if($tache["etat"] == 'EnCours') { echo "En cours"; } else if($tache["etat"] == 'EnAttente') { echo "En attente"; } else { echo "Terminé"; } ?></td>
+                <td>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" onchange="terminerTache(<?= $tache['id'] ?>)" type="checkbox" name="tache_terminee" id="id_tache_terminee" <?php if ($tache["id_utilisateur"] == "Terminee") echo "disabled" ?> />
+                    </div>
+                </td>
             </tr>
             <?php endif; ?>
 

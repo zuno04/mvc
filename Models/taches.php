@@ -90,6 +90,26 @@ function addTask($nomTache, $emmeteur, $descriptionTache, $dateDebutTache, $date
     }
 }
 
+// Terminer une tache (Mise a jour de l'etat)
+function terminerTache($id_tache) {
+    $bdd = Database::getInstance(); 
+    // var_dump( $nomTache); die;
+
+    try {
+        $req = $bdd->connection->prepare("UPDATE tache SET etat = 'Terminee' WHERE id = :id");   
+        $req->bindParam(':id', $id_tache, PDO::PARAM_STR);  
+        $update_successfull = $req->execute();
+
+        if($update_successfull){
+            return true;
+        } else {
+            return false;
+        }
+    } catch(Exception $e) {
+        die('Erreur : '.$e->getMessage());
+    }
+}
+
 // Mettre a jour une tache
 function updateTask($id_tache, $nomTache, $descriptionTache, $dateDebutTache, $dateFinTache) {
     $bdd = Database::getInstance(); 

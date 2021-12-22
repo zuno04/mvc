@@ -187,6 +187,30 @@ function transformeDate(dateString) {
   return processedDate;
 }
 
+// Terminer une tache (Travailleur)
+function terminerTache(id) {
+  let taskDone = document.querySelector("#id_tache_terminee");
+
+  if (taskDone.checked) {
+    sendAjax(
+      { id: id },
+      "http://localhost/mvc/index.php?page=task_add",
+      "POST",
+      function (err, data) {
+        if (err) {
+          throw err;
+        }
+        console.log("ok");
+        console.log(data);
+      }
+    );
+
+  //   setTimeout(function () {
+  //     location.href = "http://localhost/mvc/index.php?page=dashboard";
+  //   }, 5000);
+  // }
+}
+
 // #######################################################################################################################################################################
 
 /**
