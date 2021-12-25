@@ -66,9 +66,8 @@ function getTaskById($task_id) {
 // Ajouter une tache
 function addTask($nomTache, $emmeteur, $descriptionTache, $dateDebutTache, $dateFinTache) {
     $bdd = Database::getInstance(); 
-    $etat_tache = 'EnCours';
+    $etat_tache = 'EnAttente';
     $emmeteur = intval($emmeteur);
-    // $id_utilisateur = null;
 
     try {
         $bdd->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES,TRUE);
@@ -102,6 +101,26 @@ function terminerTache($id_tache) {
     try {
         $req = $bdd->connection->prepare("UPDATE tache SET etat = 'Terminee' WHERE id = :id");   
         $req->bindParam(':id', $id_tache, PDO::PARAM_STR);  
+        $update_successfull = $req->execute();
+
+        if($update_successfull){
+            return true;
+        } else {
+            return false;
+        }
+    } catch(Exception $e) {
+        die('Erreur : '.$e->getMessage());
+    }
+}
+
+// Attribuer une tache
+function attribuerTache($idTache, $idUser) {
+    $bdd = Database::getInstance();
+
+    try {
+        $req = $bdd->connection->prepare("UPDATE tache SET id_utilisateur = :id_user, etat='EnCours' WHERE id = :id"); 
+        $req->bindParam(':id_user', $idUser, PDO::PARAM_STR);  
+        $req->bindParam(':id', $idTache, PDO::PARAM_STR);  
         $update_successfull = $req->execute();
 
         if($update_successfull){

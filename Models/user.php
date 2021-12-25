@@ -23,6 +23,28 @@ function check_email($email) {
     }    
 }
 
+// Activation d'un utilisateur
+function userActivation($user_id, $isActivated) {
+    $bdd = Database::getInstance();
+
+    $activated = $isActivated == true ? 1 : 0; 
+    
+    try {
+        $req = $bdd->connection->prepare("UPDATE user SET activated = :activated WHERE id = :id"); 
+        $req->bindParam(':activated',$activated, PDO::PARAM_INT); 
+        $req->bindParam(':id', $user_id, PDO::PARAM_STR); 
+        $update_successfull = $req->execute();
+
+        if($update_successfull){
+            return true;
+        } else {
+            return false;
+        }
+    } catch(Exception $e) {
+        die('Erreur : '.$e->getMessage());
+    }
+}
+
 // Connexion d'un utilisateur
 function login($email, $password, $connected_as) { 
     $bdd = Database::getInstance(); 
@@ -47,6 +69,10 @@ function login($email, $password, $connected_as) {
             if($user['isconnected'] !== "Disconnected") {
                 $request_result->success = false;
                 $request_result->message = 'Vous avez déjà été ouvert une session !';
+                return $request_result;
+            } else if($user['activated'] == 0){
+                $request_result->success = false;
+                $request_result->message = 'Votre compte n\'est pas activé !';
                 return $request_result;
             } else if (in_array($_connected_as, unserialize($user['statuts']))) { // On verifie si le statut avec lequel l'utilisateur se connecte est bien parmis ceux qu'il possede en BD
                 
@@ -134,7 +160,21 @@ function getUsers() {
     $bdd = Database::getInstance();
 
     try {
-        $req = $bdd->connection->prepare("SELECT * FROM user"); 
+        $req = $bdd->connection->prepare("
+            SELECT
+            U.id,
+            U.last_name,
+            U.first_name,
+            U.email,
+            U.phone,
+            U.isconnected,
+            U.statuts,
+            U.activated,            
+            COUNT(T.id) AS nbre_taches
+            FROM user U
+            LEFT JOIN tache T ON T.id_utilisateur = U.id
+            GROUP BY U.id
+        ");  
         $req->execute();
         $users = $req->fetchAll(); 
 

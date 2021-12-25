@@ -28,6 +28,29 @@ function sendAjax(data, url, method) {
   xhr.send(JSON.stringify(data));
 }
 
+// Activer un utilisateur
+function activerUtilisateur(element, id_utilisateur) {
+  if (element) {
+    console.log(element.checked);
+    sendAjax(
+      { id: id_utilisateur, isChecked: element.checked },
+      "http://localhost/mvc/index.php?page=user_edit",
+      "POST",
+      function (err, data) {
+        if (err) {
+          throw err;
+        }
+        console.log("ok");
+        console.log(data);
+      }
+    );
+
+    setTimeout(function () {
+      location.href = "http://localhost/mvc/index.php?page=manage_users";
+    }, 500);
+  }
+}
+
 // Cette fonction Ajoute une nouvelle tache ou modifie une tache existante en fonction du parametre << tache >> qui a pour valeur par defaut << null >>
 function addTask() {
   const name = addTaskForm.querySelector("#id_taskName");
@@ -136,7 +159,6 @@ function showModal(tacheId = null, tacheBrut = null) {
 
   // Decoder ou deserialiser la tache
   // tacheBrut = decodeURIComponent(tacheBrut);
-  console.log(tacheBrut);
 
   let taskModal = document.getElementById("id_modal_tache");
   let modalTitle = taskModal.querySelector("#idTaskModalTitle");
@@ -194,10 +216,9 @@ function transformeDate(dateString) {
 }
 
 // Terminer une tache (Travailleur)
-function terminerTache(id) {
-  let taskDone = document.querySelector("#id_tache_terminee");
-
-  if (taskDone.checked) {
+function terminerTache(element, id) {
+  // Verifier si l'element (checkbox) change d'etat
+  if (element.checked) {
     sendAjax(
       { id: id },
       "http://localhost/mvc/index.php?page=task_add",
@@ -217,6 +238,50 @@ function terminerTache(id) {
   }
 }
 
+// Attribuer une tache
+function setTask(id_tache) {
+  let attribuerModalElement = document.getElementById("id_attribuer_tache");
+  let modalTitle = attribuerModalElement.querySelector(
+    "#id_attribuer_tache_titre"
+  );
+  let attribuerTacheModalPopup = new bootstrap.Modal(attribuerModalElement, {});
+
+  let listeTravailleurs = document.querySelector("#id_liste_travailleurs");
+  let boutonEnregisterOperation = document.querySelector(
+    "#id_enregistrer_tache_attribuee"
+  );
+
+  // Enregister en BD lorsque le bouton 'Enregister' est clique
+  boutonEnregisterOperation.addEventListener("click", (event) => {
+    if (listeTravailleurs.value != "0") {
+      sendAjax(
+        {
+          idTache: id_tache,
+          idUser: listeTravailleurs.value,
+          attribuerTache: true,
+        },
+        "http://localhost/mvc/index.php?page=task_add",
+        "POST",
+        function (err, data) {
+          if (err) {
+            throw err;
+          }
+          console.log("ok");
+          console.log(data);
+        }
+      );
+
+      // Rediriger vers le Dashboard
+      location.href = "http://localhost/mvc/index.php?page=dashboard";
+    } else {
+      alert("Veuillez choisir un travailleur !!!");
+    }
+  });
+
+  // Afficher la fenetre modale
+  attribuerTacheModalPopup.show();
+}
+
 // #######################################################################################################################################################################
 
 /**
@@ -224,4 +289,7 @@ function terminerTache(id) {
  */
 
 // ########################################################################################################################################################################
-buttonAddTask.addEventListener("click", addTask);
+
+if (buttonAddTask) {
+  buttonAddTask.addEventListener("click", addTask);
+}

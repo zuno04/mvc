@@ -34,3 +34,11 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.task-done-bg {
+  background-color: #a7e1c6;
+}
+
+.task-going-bg {
+  background-color: #f1d274d1;
+}

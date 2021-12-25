@@ -7,7 +7,7 @@ include_once('Models/user.php');
 
 if(isset($_SESSION['user'])){
     if ( $_SESSION['user']['isconnected'] == 'Root') {
-        if($_GET['user_id']) {
+        if(isset($_GET['user_id'])) {
             if(isset($_POST['status_updated'])) {
                 // Mettre a jour le statut de l'utilisateur
                 $user_status = [];
@@ -40,6 +40,12 @@ if(isset($_SESSION['user'])){
                     header('Location: index.php?page=manage_users');
                 }
             }
+        } else if(isset($_POST)) {
+            $userActivation = json_decode(file_get_contents("php://input"), false);
+
+            // var_dump($userActivation); die;
+
+            userActivation($userActivation->id, $userActivation->isChecked);
         } else {
             header('Location: index.php?page=manage_users');
         }

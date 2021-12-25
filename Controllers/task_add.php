@@ -16,6 +16,10 @@ if(isset($_SESSION['user'])){
             
             $newTaskData = json_decode(file_get_contents("php://input"), false);
 
+            if($_SESSION['user']['isconnected'] == 'Root' && $newTaskData->attribuerTache == true) {
+                attribuerTache($newTaskData->idTache, $newTaskData->idUser);
+            }
+
             if($newTaskData->createTask == false) {
                 
                 $updateTask = updateTask($newTaskData->id, $newTaskData->name, $newTaskData->description, $newTaskData->startDate, $newTaskData->endDate);
