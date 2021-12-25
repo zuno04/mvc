@@ -134,7 +134,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                <button id="id_enregistrer_tache_attribuee" type="button" class="btn btn-primary">Enregistrer</button>
+                <button data-host="<?= HOST_URL ?>" id="id_enregistrer_tache_attribuee" type="button" class="btn btn-primary">Enregistrer</button>
             </div>
             </div>
         </div>
@@ -197,7 +197,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" id="addTaskButton" class="btn btn-primary" >Enregistrer</button>
+                <button data-host="<?= HOST_URL ?>" type="button" id="addTaskButton" class="btn btn-primary" >Enregistrer</button>
             </div>
             </div>
         </div>

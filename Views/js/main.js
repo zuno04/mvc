@@ -53,6 +53,7 @@ function activerUtilisateur(element, id_utilisateur) {
 
 // Cette fonction Ajoute une nouvelle tache ou modifie une tache existante en fonction du parametre << tache >> qui a pour valeur par defaut << null >>
 function addTask() {
+  const destinationController = "http://" + buttonAddTask.dataset.host;
   const name = addTaskForm.querySelector("#id_taskName");
   const description = addTaskForm.querySelector("#id_taskDescription");
   const startDate = addTaskForm.querySelector("#id_dateDebut");
@@ -96,7 +97,7 @@ function addTask() {
 
     sendAjax(
       newTask,
-      "http://localhost/mvc/index.php?page=task_add",
+      destinationController + "?page=task_add",
       "POST",
       function (err, data) {
         if (err) {
@@ -106,7 +107,7 @@ function addTask() {
         console.log(data);
       }
     );
-    location.href = "http://localhost/mvc/index.php?page=dashboard";
+    location.href = destinationController + "?page=dashboard";
   } else {
     alert(errors.join("\n"));
   }

@@ -3,6 +3,11 @@
 
 include_once('Models/db_connection.php');
 
+define("HOST_URL", $_SERVER['SERVER_NAME'] . explode("?", $_SERVER["REQUEST_URI"])[0]);
+
+
+// var_dump(HOST_URL);die;
+
 if (!isset($_GET['page']) OR $_GET['page'] == 'index') {
     include_once('Controllers/index.php');
 } elseif($_GET['page'] == 'login'){
