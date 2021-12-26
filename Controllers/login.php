@@ -29,8 +29,10 @@ if(isset($_SESSION['user'])){
         if($login_request->success) {
             $_SESSION['user'] = $login_request->data;
             
-            $_SESSION['start'] = time();
-            $_SESSION['expire'] = $_SESSION['start'] + (40 * 60);
+            $_SESSION['start'] = time(); // Prendre le temps de connexion
+
+            // Définir la durée de la session
+            $_SESSION['expire'] = $_SESSION['start'] + (15 * 60); 
             header('Location: index.php?page=dashboard');
         } else {
             $_SESSION['login_errors'] = $login_request->message;

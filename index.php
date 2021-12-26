@@ -1,6 +1,15 @@
 <?php
 // Controlleur Global ou Routeur
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+
+    $currentTime = time();
+    if(isset($_SESSION['user']) && isset($_SESSION['expire']) && $currentTime > $_SESSION['expire']) {
+        header('Location: index.php?page=logout');
+    }
+}
+
 include_once('Models/db_connection.php');
 
 define("HOST_URL", $_SERVER['SERVER_NAME'] . explode("?", $_SERVER["REQUEST_URI"])[0]);
