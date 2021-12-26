@@ -1,6 +1,6 @@
 <?php include_once(__DIR__ . '/../partials/header.php'); ?>
 
-    <main class='container main-container'>
+    <main class='main-content container main-container'>
       <h1>Utilisateur : <?= $user['first_name'] . " " . $user['last_name'] ?></h1>
 
       <div class="mt-5 row">

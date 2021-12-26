@@ -7,6 +7,17 @@ if (session_status() == PHP_SESSION_NONE) {
 include_once('Models/user.php');
 
 $login_errors = "";
+$signup_success = "";
+
+if(isset($_SESSION['signup_success'])) {
+    $signup_success = $_SESSION['signup_success'];
+    unset($_SESSION['signup_success']); 
+}
+
+if(isset($_SESSION['login_errors'])) {
+    $login_errors = $_SESSION['login_errors'];
+    unset($_SESSION['login_errors']); 
+}
 
 if(isset($_SESSION['user'])){
     header('Location: index.php?page=dashboard');
@@ -17,10 +28,12 @@ if(isset($_SESSION['user'])){
 
         if($login_request->success) {
             $_SESSION['user'] = $login_request->data;
+            
+            $_SESSION['start'] = time();
+            $_SESSION['expire'] = $_SESSION['start'] + (40 * 60);
             header('Location: index.php?page=dashboard');
         } else {
-            $login_errors = $login_request->message;
-            $_SESSION['login_errors'] = $login_errors;
+            $_SESSION['login_errors'] = $login_request->message;
             header('Location: index.php?page=login');
         }
         

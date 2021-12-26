@@ -1,6 +1,6 @@
 <?php include_once(__DIR__ . '/../partials/header.php'); ?>
 
-    <main class='container main-container'>
+    <main class='main-content container main-container'>
       <h1><?= $_SESSION['user']['isconnected'] == 'Root' ? "Liste des tâches" : "Mes tâches" ?></h1>
       <!-- Button trigger modal -->
       <?php if($_SESSION['user']['isconnected'] == 'Root' || $_SESSION['user']['isconnected'] == 'Client'): ?>
@@ -45,7 +45,7 @@
                 <td><?= $tache["date_fin"] ?></td>
                 <td><?= $tache["prenom_auteur"] . " " . $tache["nom_auteur"] ?></td>
                 <td>
-                    <?= isset($tache["id_utilisateur"]) ? $tache["prenom_executant"] . " " . $tache["nom_executant"] : "<em>Aucun</em> <a onclick='setTask(" . $tache["id"] . ")' class='btn'><i class=\"bi bi-plus-circle-dotted text-info \"></i></a>" ?>
+                    <?php if(isset($tache["id_utilisateur"])) { echo $tache["prenom_executant"] . " " . $tache["nom_executant"]; } else { ?> <em>Aucun</em> <a onclick="setTask('<?= HOST_URL ?>', <?= $tache['id'] ?>)" class='cursor-pointer'><i class='bi bi-plus-circle-dotted text-info'></i></a> <?php } ?>
                 </td>
                 <td><?php if($tache["etat"] == 'EnCours') { echo "En cours"; } else if($tache["etat"] == 'EnAttente') { echo "En attente"; } else { echo "Terminé"; } ?></td>
                 <td>
@@ -57,7 +57,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="#" onclick="supprimerTache(<?= $tache['id'] ?>)">
+                    <a href="#" onclick="supprimerTache('<?= HOST_URL ?>', <?= $tache['id'] ?>)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#f05463" class="bi bi-trash-fill" viewBox="0 0 16 16">
                             <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"></path>
                         </svg>
@@ -102,7 +102,7 @@
                 <td><?php if($tache["etat"] == 'EnCours') { echo "En cours"; } else if($tache["etat"] == 'EnAttente') { echo "En attente"; } else { echo "Terminé"; } ?></td>
                 <td>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" onchange="terminerTache(this, <?= $tache['id'] ?>)" type="checkbox" name="tache_terminee_<?= $tache['id'] ?>" id="id_tache_terminee_<?= $tache['id'] ?>" <?php if ($tache["etat"] == "Terminee") echo "checked disabled" ?> />
+                        <input class="form-check-input" data-host="<?= HOST_URL ?>" onchange="terminerTache(this, <?= $tache['id'] ?>)" type="checkbox" name="tache_terminee_<?= $tache['id'] ?>" id="id_tache_terminee_<?= $tache['id'] ?>" <?php if ($tache["etat"] == "Terminee") echo "checked disabled" ?> />
                     </div>
                 </td>
             </tr>
@@ -126,7 +126,7 @@
                 <select id="id_liste_travailleurs" class="form-select form-select-sm" aria-label=".form-select-sm example">
                     <option value="0" selected>Choisir un travailleur</option>
                     <?php foreach($travailleurs as $travailleur): ?>
-                    <?php if(count(unserialize($travailleur["statuts"])) == 1 && unserialize($travailleur["statuts"])[0] == 'Travailleur'): ?>
+                    <?php if(count(unserialize($travailleur["statuts"])) == 1 && unserialize($travailleur["statuts"])[0] == 'Travailleur' && $travailleur["activated"]  == 1): ?>
                     <option value="<?= $travailleur['id'] ?>"><?= $travailleur['first_name'] . " " . $travailleur['last_name'] ?></option>
                     <?php endif; ?>
                     <?php endforeach; ?>

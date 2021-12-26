@@ -3,20 +3,23 @@
 include_once(__DIR__ . '/../partials/header.php'); 
 ?>
 
-    <main class='container main-container d-flex justify-content-center'>
+    <main class='main-content container main-container d-flex justify-content-center'>
         <form method="POST" action="index.php?page=login">
             <!-- Login Errors display -->
-            <?php if(isset($_SESSION['login_errors']) && strlen($_SESSION['login_errors']) > 0): ?>
-            <div class="p-4 mb-4 border jumbotron h-15 bg-light rounded-3 text-danger">
-               <?= $_SESSION['login_errors'] ?>
+            <?php if(isset($login_errors) && !empty($login_errors)): ?>
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                <div class="max-width-fit-content">
+                    <?= $login_errors ?>
+                </div>
             </div>
             <?php endif; ?>
             
             <!-- Signin sucess display -->
-            <?php if(isset($_SESSION['signup_success']) && strlen($_SESSION['signup_success']) > 0): ?>
-            <div class="alert alert-success alert-dismissible text-wrap">
+            <?php if(isset($signup_success) && !empty($signup_success)): ?>
+            <div class="alert alert-success alert-dismissible max-width-fit-content">
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <strong>Bravo!</strong> <?= $_SESSION['signup_success'] ?>
+                <strong>Bravo!</strong> <?= $signup_success ?>
             </div>
             <?php endif; ?>
 

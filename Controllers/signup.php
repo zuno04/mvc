@@ -4,10 +4,10 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+include_once('models/user.php');
+
 $signup_errors = [];
 $signup_correct_data = [];
-
-include_once('models/user.php');
 
 if(isset($_SESSION['user'])){
     header('Location: index.php?page=dashboard');
@@ -34,7 +34,7 @@ if(isset($_SESSION['user'])){
     // Validation du numero de telephone
     $phone = trim($_POST['phone']);
 
-    if(preg_match('/((^(\+32|0)\d{3})-?\d{6})/', $phone)) {
+    if(preg_match('/^\+\d+$/', $phone)) {
         $signup_correct_data['phone'] = $phone;
     } else {
         $signup_errors['phone'] = "Numéro de téléphone invalide";

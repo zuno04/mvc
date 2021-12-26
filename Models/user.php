@@ -210,6 +210,42 @@ function getUserById($user_id) {
     }
 }
 
+// Mettre a jour les informations d'un utilisateur
+function updateUserSettings($user_id, $data_to_update) {
+    $bdd = Database::getInstance();
+    
+    $sql = "";
+
+    if(isset($data_to_update['first_name'])) {
+        $sql .= "first_name = '" . $data_to_update['first_name'] . "'";
+    }
+    if(isset($data_to_update['last_name'])) {
+        $sql .= empty($sql) ? "last_name = '" . $data_to_update['last_name'] . "'" : (", last_name = '" . $data_to_update['last_name']) . "'";
+    }
+    if(isset($data_to_update['phone'])) {
+        $sql .= empty($sql) ? "phone = '" . $data_to_update['phone'] . "'" : (", phone = '" . $data_to_update['phone']) . "'";
+    }
+    if(isset($data_to_update['password'])) {
+        $sql .= empty($sql) ?  "password = '" . $data_to_update['password'] . "'" : (", password = '" . $data_to_update['password']) . "'";
+    }
+
+    // die("UPDATE user SET " . $sql);
+
+    try {
+        $req = $bdd->connection->prepare("UPDATE user SET " . $sql . " WHERE id = :id"); 
+        $req->bindParam(':id', $user_id, PDO::PARAM_STR);
+        $update_successfull = $req->execute();
+
+        if($update_successfull){
+            return true;
+        } else {
+            return false;
+        }
+    } catch(Exception $e) {
+        die('Erreur : '.$e->getMessage());
+    }
+}
+
 // Mettre a jour le statut de l'utilisateur
 function updateUserStatus($user_id, $statuts) {
     $bdd = Database::getInstance(); 

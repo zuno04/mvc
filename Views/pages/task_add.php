@@ -4,7 +4,7 @@
 
 ?>
 
-    <main id="main" class='container d-flex justify-content-center main-container'>
+    <main id="main" class='main-content container d-flex justify-content-center main-container'>
         <form method="POST" action="index.php?page=task_add">
             <h1 class="mb-3 h3 fw-normal">Ajout d'une nouvelle tâche</h1>
 

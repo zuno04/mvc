@@ -30,11 +30,12 @@ function sendAjax(data, url, method) {
 
 // Activer un utilisateur
 function activerUtilisateur(element, id_utilisateur) {
+  const destinationController = "http://" + element.dataset.host;
   if (element) {
     console.log(element.checked);
     sendAjax(
       { id: id_utilisateur, isChecked: element.checked },
-      "http://localhost/mvc/index.php?page=user_edit",
+      destinationController + "?page=user_edit",
       "POST",
       function (err, data) {
         if (err) {
@@ -46,7 +47,7 @@ function activerUtilisateur(element, id_utilisateur) {
     );
 
     setTimeout(function () {
-      location.href = "http://localhost/mvc/index.php?page=manage_users";
+      location.href = destinationController + "?page=manage_users";
     }, 500);
   }
 }
@@ -114,13 +115,16 @@ function addTask() {
 }
 
 // Suppriner une tache
-function supprimerTache(id) {
+function supprimerTache(data_host, id) {
+  const destinationController = "http://" + data_host;
+
   const remove = confirm("Suppprimer la tâche ?");
+
   if (remove) {
     // Supprimer la tache si l'utilisateur confirme
     sendAjax(
       { id: id },
-      "http://localhost/mvc/index.php?page=task_delete",
+      destinationController + "?page=task_delete",
       "POST",
       function (err, data) {
         if (err) {
@@ -130,7 +134,7 @@ function supprimerTache(id) {
         console.log(data);
       }
     );
-    location.href = "http://localhost/mvc/index.php?page=dashboard";
+    location.href = destinationController + "?page=dashboard";
   }
 }
 
@@ -218,11 +222,12 @@ function transformeDate(dateString) {
 
 // Terminer une tache (Travailleur)
 function terminerTache(element, id) {
+  const destinationController = "http://" + element.dataset.host;
   // Verifier si l'element (checkbox) change d'etat
   if (element.checked) {
     sendAjax(
       { id: id },
-      "http://localhost/mvc/index.php?page=task_add",
+      destinationController + "?page=task_add",
       "POST",
       function (err, data) {
         if (err) {
@@ -234,13 +239,14 @@ function terminerTache(element, id) {
     );
 
     setTimeout(function () {
-      location.href = "http://localhost/mvc/index.php?page=dashboard";
+      location.href = destinationController + "?page=dashboard";
     }, 500);
   }
 }
 
 // Attribuer une tache
-function setTask(id_tache) {
+function setTask(data_host, id_tache) {
+  const destinationController = "http://" + data_host;
   let attribuerModalElement = document.getElementById("id_attribuer_tache");
   let modalTitle = attribuerModalElement.querySelector(
     "#id_attribuer_tache_titre"
@@ -261,7 +267,7 @@ function setTask(id_tache) {
           idUser: listeTravailleurs.value,
           attribuerTache: true,
         },
-        "http://localhost/mvc/index.php?page=task_add",
+        destinationController + "?page=task_add",
         "POST",
         function (err, data) {
           if (err) {
@@ -273,14 +279,32 @@ function setTask(id_tache) {
       );
 
       // Rediriger vers le Dashboard
-      location.href = "http://localhost/mvc/index.php?page=dashboard";
+      location.href = destinationController + "?page=dashboard";
     } else {
       alert("Veuillez choisir un travailleur !!!");
     }
   });
 
+  // *********************************************************************************************************************************************************************
+  /**
+   *  Fin Fonctions
+   */
+  // *********************************************************************************************************************************************************************
+
   // Afficher la fenetre modale
   attribuerTacheModalPopup.show();
+}
+
+// Modifier un element de la page de settings
+function editElement(element, inputId, associatedId = null) {
+  let elementToEdit = element.querySelector("#" + inputId);
+
+  elementToEdit.disabled = !elementToEdit.disabled;
+
+  if (associatedId) {
+    let associateToEdit = document.querySelector("#" + associatedId);
+    associateToEdit.disabled = !associateToEdit.disabled;
+  }
 }
 
 // #######################################################################################################################################################################

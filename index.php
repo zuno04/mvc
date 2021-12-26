@@ -12,7 +12,9 @@ if (!isset($_GET['page']) OR $_GET['page'] == 'index') {
     include_once('Controllers/index.php');
 } elseif($_GET['page'] == 'login'){
     include_once('Controllers/login.php');
-}  elseif($_GET['page'] == 'signup'){
+} elseif($_GET['page'] == 'settings'){
+    include_once('Controllers/settings.php');
+} elseif($_GET['page'] == 'signup'){
     include_once('Controllers/signup.php');
 } elseif($_GET['page'] == 'dashboard'){
     include_once('Controllers/dashboard.php');

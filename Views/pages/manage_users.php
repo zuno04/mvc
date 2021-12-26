@@ -1,6 +1,6 @@
 <?php include_once(__DIR__ . '/../partials/header.php'); ?>
 
-    <main class='container main-container'>
+    <main class='main-content container main-container'>
       <h1>Gestion des utilisateurs</h1>
 
       <div class="mt-5">
@@ -30,7 +30,7 @@
                     <td class="text-center"><?= $user['nbre_taches'] ?></td>
                     <td>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" onchange="activerUtilisateur(this, <?= $user['id'] ?>)" type="checkbox" name="activer_user_<?= $user['id'] ?>" id="id_activer_user_<?= $user['id'] ?>" <?php  if ($_SESSION['user']['id'] == $user["id"]) { echo "checked disabled"; } else { if ($user["activated"] == 1) { echo "checked"; } } ?> />
+                            <input class="form-check-input" data-host="<?= HOST_URL ?>" onchange="activerUtilisateur(this, <?= $user['id'] ?>)" type="checkbox" name="activer_user_<?= $user['id'] ?>" id="id_activer_user_<?= $user['id'] ?>" <?php  if ($_SESSION['user']['id'] == $user["id"]) { echo "checked disabled"; } else { if ($user["activated"] == 1) { echo "checked"; } } ?> />
                         </div>
                     </td>
                     <td class="text-center">

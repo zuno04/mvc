@@ -4,7 +4,7 @@
 
 ?>
 
-    <main id="main" class='container d-flex justify-content-center main-container'>
+    <main id="main" class='main-content container d-flex justify-content-center main-container'>
         <form method="POST" action="index.php?page=signup">
             <h1 class="mb-3 h3 fw-normal">Création de compte</h1>
 
@@ -16,7 +16,7 @@
                         <label for="prenom">Prénom</label>
                     </div>
                     <?php if(isset($_SESSION['signup_errors']['prenom'])): ?>
-                    <small id="passwordHelp" class="mt-2 text-danger">
+                    <small id="passwordHelp" class="mt-2 text-danger max-width-fit-content">
                         <?= $_SESSION['signup_errors']['prenom'] ?>
                     </small>
                     <?php endif; ?>
@@ -28,7 +28,7 @@
                         <label for="nom">Nom</label>
                     </div>
                     <?php if(isset($_SESSION['signup_errors']['nom'])): ?>
-                    <small id="passwordHelp" class="mt-2 text-danger">
+                    <small id="passwordHelp" class="mt-2 text-danger max-width-fit-content">
                         <?= $_SESSION['signup_errors']['nom'] ?>
                     </small>
                     <?php endif; ?>
@@ -41,7 +41,7 @@
                 <label for="phone">Telephone</label>
             </div>
             <?php if(isset($_SESSION['signup_errors']['phone'])): ?>
-            <small id="passwordHelp" class="mt-2 text-danger">
+            <small id="passwordHelp" class="mt-2 text-danger max-width-fit-content">
                 <?= $_SESSION['signup_errors']['phone'] ?>
             </small>
             <?php endif; ?>
@@ -53,7 +53,7 @@
             </div>
 
             <?php if(isset($_SESSION['signup_errors']['email'])): ?>
-            <small id="passwordHelp" class="mt-2 text-danger">
+            <small id="passwordHelp" class="mt-2 text-danger max-width-fit-content">
                 <?= $_SESSION['signup_errors']['email'] ?>
             </small>
             <?php endif; ?>
@@ -67,7 +67,7 @@
                     </div>
 
                     <?php if(isset($_SESSION['signup_errors']['password'])): ?>
-                    <div class="text-danger"><?= $_SESSION['signup_errors']['password'] ?></div>
+                    <div class="text-danger max-width-fit-content"><?= $_SESSION['signup_errors']['password'] ?></div>
                     <?php endif; ?>
                 </div>
 
@@ -77,7 +77,7 @@
                         <label for="refloatingPassword">Repeter le mot de passe</label>
                     </div>
                     <?php if(isset($_SESSION['signup_errors']['repassword'])): ?>
-                    <div class="text-danger"><?= $_SESSION['signup_errors']['repassword'] ?></div>
+                    <div class="text-danger max-width-fit-content"><?= $_SESSION['signup_errors']['repassword'] ?></div>
                     <?php endif; ?>
                 </div>
             </div>
