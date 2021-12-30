@@ -285,12 +285,6 @@ function setTask(data_host, id_tache) {
     }
   });
 
-  // *********************************************************************************************************************************************************************
-  /**
-   *  Fin Fonctions
-   */
-  // *********************************************************************************************************************************************************************
-
   // Afficher la fenetre modale
   attribuerTacheModalPopup.show();
 }
@@ -299,13 +293,19 @@ function setTask(data_host, id_tache) {
 function editElement(element, inputId, associatedId = null) {
   let elementToEdit = element.querySelector("#" + inputId);
 
-  elementToEdit.disabled = !elementToEdit.disabled;
+  elementToEdit.disabled = elementToEdit.disabled === true ? false : true;
 
   if (associatedId) {
     let associateToEdit = document.querySelector("#" + associatedId);
     associateToEdit.disabled = !associateToEdit.disabled;
   }
 }
+
+// *********************************************************************************************************************************************************************
+/**
+ *  Fin Fonctions
+ */
+// *********************************************************************************************************************************************************************
 
 // #######################################################################################################################################################################
 

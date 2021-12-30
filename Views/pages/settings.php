@@ -1,8 +1,4 @@
-<?php 
-  //session_start();
-  include_once(__DIR__ . '/../partials/header.php'); 
-
-?>
+<?php  include_once(__DIR__ . '/../partials/header.php'); ?>
 
     <main id="main" class='main-content mb-5 container d-flex justify-content-center main-container'>
         <form method="POST" action="index.php?page=settings">
@@ -20,7 +16,7 @@
             <!-- Prenom et Nom -->
             <div class="row">
                 <div ondblclick="editElement(this, 'prenom')" class="col-md-6">
-                    <div class="form-floating input-group has-validation">
+                    <div class="mt-3 form-floating input-group has-validation">
                         <input name="prenom" type="text" class="cursor-pointer form-control<?= isset($signup_errors['prenom']) ? " border-danger" : "" ?>" id="prenom" placeholder="Prénom" required value=<?= $_SESSION['user']['first_name'] ?> disabled>
                         <label for="prenom">Prénom</label>
                     </div>
@@ -33,8 +29,10 @@
     
                 <div class="col-md-6">
                     <div ondblclick="editElement(this, 'nom')" class="form-floating">
-                        <input required name="nom" type="text" class="cursor-pointer form-control<?= isset($signup_errors['nom']) ? " border-danger" : "" ?>" id="nom" placeholder="Nom" required value=<?= $_SESSION['user']['last_name'] ?> disabled>
-                        <label for="nom">Nom</label>
+                        <div class="mt-3 form-floating input-group has-validation">
+                            <input required name="nom" type="text" class="cursor-pointer form-control<?= isset($signup_errors['nom']) ? " border-danger" : "" ?>" id="nom" placeholder="Nom" required value=<?= $_SESSION['user']['last_name'] ?> disabled>
+                            <label for="nom">Nom</label>
+                        </div>
                     </div>
                     <?php if(isset($signup_errors['nom'])): ?>
                     <small id="passwordHelp" class="mt-2 text-danger">

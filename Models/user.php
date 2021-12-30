@@ -226,7 +226,8 @@ function updateUserSettings($user_id, $data_to_update) {
         $sql .= empty($sql) ? "phone = '" . $data_to_update['phone'] . "'" : (", phone = '" . $data_to_update['phone']) . "'";
     }
     if(isset($data_to_update['password'])) {
-        $sql .= empty($sql) ?  "password = '" . $data_to_update['password'] . "'" : (", password = '" . $data_to_update['password']) . "'";
+        $password_crypte = password_hash($data_to_update['password'], PASSWORD_BCRYPT);
+        $sql .= empty($sql) ?  "password = '" . $password_crypte . "'" : (", password = '" . $password_crypte) . "'";
     }
 
     // die("UPDATE user SET " . $sql);

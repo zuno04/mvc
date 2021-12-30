@@ -17,6 +17,7 @@
     <!-- flatpickr Pour selection de date (https://unpkg.com/flatpickr@1.6.5/index.html) -->
     <link rel="stylesheet" type="text/css" href="./views/css/flatpickr.min.css">
     <link rel="stylesheet" href="./views/css/style.css" />
+    <link rel="stylesheet" href="./views/css/chat.css" />
     <title>Projet Janvier</title>
   </head>
   <body class="h-100">

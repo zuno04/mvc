@@ -19,5 +19,6 @@
       flatpickr('.flatpickr', { dateFormat: 'd-m-Y'});
     </script>
     <script defer src="./Views/js/main.js"></script>
+    <script defer src="./Views/js/chat.js"></script>
   </body>
 </html>
