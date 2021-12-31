@@ -1,24 +1,67 @@
-const popup = document.querySelector(".chat-popup");
-const chatBtn = document.querySelector(".chat-btn");
-const chatSendBtn = document.querySelector("#chat_send");
-const submitBtn = document.querySelector(".submit");
-const chatArea = document.querySelector(".chat-area");
-const inputElm = document.querySelector("#chat_input");
+window.onload = function () {
+  const popup = document.querySelector(".chat-popup");
+  const chatBtn = document.querySelector(".chat-btn");
+  // const chatSendBtn = document.querySelector("#chat_send");
+  const submitBtn = document.querySelector("#chat_send");
+  const chatArea = document.querySelector(".chat-area");
+  const inputElm = document.querySelector("#chat_input");
 
-//   chat button toggler
+  /**
+   * / Connection au serveur NodeJS via socket.io
+   */
 
-chatBtn.addEventListener("click", () => {
-  popup.classList.toggle("show");
-});
+  // var socket = io("http://localhost:3001");
 
-// send msg
-submitBtn.addEventListener("click", () => {
-  let userInput = inputElm.value;
+  var socket = io("http://localhost:3001", {
+    transports: ["websocket"],
+    transportOptions: {
+      polling: {
+        extraHeaders: {
+          "my-custom-header": "my-custom-header-value",
+        },
+      },
+    },
+  });
 
-  let temp = `<div class="out-msg">
-    <span class="my-msg">${userInput}</span>
-    </div>`;
+  socket.on("connect", () => {
+    console.log("Connected");
+    console.log(socket.connected);
+  });
 
-  chatArea.insertAdjacentHTML("beforeend", temp);
-  inputElm.value = "";
-});
+  // socket.on("test", () => {
+  //   console.log("In test socket on");
+  // });
+
+  // socket.on("news", function (data) {
+  //   console.log(data);
+  //   socket.emit("my other event", { my: "data" });
+  // });
+
+  // End Connection to Socket
+
+  //   chat button toggler
+  chatBtn.addEventListener("click", () => {
+    popup.classList.toggle("show");
+  });
+
+  // send msg
+  submitBtn.addEventListener("click", () => {
+    let userInput = inputElm.value;
+
+    if (userInput && userInput.length > 0 && submitBtn.dataset.sender != 1) {
+      // send msg to server
+      socket.emit("chat_message", {
+        sender: submitBtn.dataset.sender,
+        message: userInput,
+        receiver: "1",
+      });
+
+      let temp = `<div class="out-msg">
+      <span class="my-msg">${userInput}</span>
+      </div>`;
+
+      chatArea.insertAdjacentHTML("beforeend", temp);
+      inputElm.value = "";
+    }
+  });
+};

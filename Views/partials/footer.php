@@ -14,10 +14,13 @@
     ></script>
     <!-- flatpickr Pour selection de date (https://unpkg.com/flatpickr@1.6.5/index.html) -->
     <script src="./Views/js/flatpickr.js"></script>
+    <!-- <script defer src="./Views/js/socket.io.js"></script> -->
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js" integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" crossorigin="anonymous"></script>
 
     <script>
       flatpickr('.flatpickr', { dateFormat: 'd-m-Y'});
     </script>
+
     <script defer src="./Views/js/main.js"></script>
     <script defer src="./Views/js/chat.js"></script>
   </body>
