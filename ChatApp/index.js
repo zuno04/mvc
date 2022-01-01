@@ -35,7 +35,9 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log("Un utilisateur s'est connecté !");
-  socket.on("chat_message", (msg) => {
+
+  // Recevoir les messages des autres utilisateurs
+  socket.on("user_message", (msg) => {
     // Requete SQL d'insertion du message en BD
     let sql =
       "INSERT INTO messages (contenu, emetteur, destinataire) VALUES (" +
@@ -52,7 +54,31 @@ io.on("connection", (socket) => {
       if (err) throw err;
       console.log("1 record inserted");
     });
-    console.log(sql);
+
+    // Notifier le Root
+    io.emit("message_for_root", {
+      sender: msg.sender,
+      message: msg.message,
+    });
+  });
+
+  // Recevoir les messages du Root
+  socket.on("root_message", (msg) => {
+    console.log("Message reçu du Root");
+    // Requete SQL d'insertion du message en BD
+    let sql = `INSERT INTO messages (contenu, emetteur, destinataire) VALUES ("${msg.message}", ${msg.sender}, ${msg.receiver})`;
+
+    // insertion du message en BD
+    connection.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log("1 record inserted");
+    });
+
+    // Notifier l'utilisateur
+    io.emit("message_from_root", {
+      receiver: msg.receiver,
+      message: msg.message,
+    });
   });
 
   socket.on("disconnect", () => {

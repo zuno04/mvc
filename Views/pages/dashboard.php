@@ -211,13 +211,15 @@
             </svg>
         </button>
 
-        <div class="chat-popup">
+        <div data-user="<?= $_SESSION['user']['id'] ?>" class="chat-popup">
             <!-- <div class="badge">1</div> -->
             <div class="chat-area">
+                <?php if($_SESSION['user']['id'] != 1): ?>
                 <div class="income-msg">
-                    <img src="./Views/img/person.jpg" class="avatar" alt="root">
+                    <img src="./Views/img/root.jpg" class="avatar" alt="root">
                     <span class="msg"> Salut, Puis-je t'aider?</span>
-                </div>   
+                </div>
+                <?php endif; ?>   
             </div>
 
             <div class="input-area">
